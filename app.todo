@@ -1,0 +1,17 @@
+1. Add Dashboard
+    - Chats
+    - Groups (Teams)
+    - Calendar (Task, Meetings, Events)
+    - Chat
+    - Files
+
+2. Add Forgot password (Email Verification)
+
+3. Add Real Time Chat (Flask SocketIO)
+
+4. Add Database Tables
+    - User
+    - Group / Team
+    - Event
+    - Task
+    - Meeting

@@ -4,15 +4,18 @@ from flask_sqlalchemy import SQLAlchemy
 import app
 from flask import flash, redirect, render_template, request, url_for
 from secrets import token_hex
-
+from  datetime import timedelta
 # SetUp
 app = Flask(__name__)
 app.config['SECRET_KEY'] = token_hex(16)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.db'
 db = SQLAlchemy(app)
+app.permanent_session_lifetime = timedelta(minutes=15)
+
 
 # vars and constants
 is_authenticated = False
+
 
 # Models
 
