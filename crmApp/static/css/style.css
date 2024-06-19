@@ -48,7 +48,7 @@ body, html {
 /* Responsive columns */
 @media screen and (max-width: 600px) {
   .column {
-    width: 100%;
+    width: 10%;
     display: block;
     margin-bottom: 20px;
   }
@@ -61,23 +61,36 @@ body, html {
   padding: 16px;
   text-align: center;
   background-color: #f1f1f1;
+ 
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 50%;
 }
-.slideshow-container {
+
+.image-sequence {
   position: relative;
-  max-width: 800px;
-  margin: auto;
+  width: 10%; /* Full width */
+  height: 10%; /* Full height */
+  overflow: hidden;
 }
 
-.slide {
-  display: none;
+.image-sequence img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  animation: slideRightToLeft 10s linear infinite;
+  width: 10%; /* Full width */
+  height: auto; /* Maintain aspect ratio */
 }
 
-.fade {
-  animation-name: fade;
-  animation-duration: 1.5s;
+@keyframes slideRightToLeft {
+  0% {
+      right: 100%; /* Start position (right edge of the container) */
+  }
+  100% {
+      right: -100%; /* End position (left edge of the container) */
+  }
 }
 
-@keyframes fade {
-  from {opacity: .4}
-  to {opacity: 1}
-}
+
