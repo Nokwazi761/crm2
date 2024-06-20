@@ -1,31 +1,43 @@
 {% extends 'layout.html' %}
-
+       
 {% block content %}
-
+     
 <header class="w3-container" id="home-section" style="background-color: blue; color: white; padding: 48px;">
     <div class="w3-left-align">
-        <span class="w3-jumbo w3-hide-small">AUDIO VISUAL LAB</span><br>
-        <span class="w3-xxlarge w3-hide-large w3-hide-medium">AUDIO VISUAL LAB</span><br>
+        <span class="w3-jumbo w3-hide-small">Audio Visual Lab</span><br>
+        <span class="w3-xxlarge w3-hide-large w3-hide-medium">Audio Visual Lab</span><br>
         <span class="w3-large">Capture the unseen</span>
-        <p><a href="/dashboard" class="w3-btn w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Discover more and get started today</a></p>
+        <p><a href="{{ url_for('calendar') }}" class="w3-btn w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Discover more and get started today</a></p>
     </div>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Sequence</title>
     <link rel="stylesheet" href="styles.css">
-    
     <body>
-        <div class="bgimg-1"></div>
+        
         <div class="image-sequence">
-                <img src="{{ url_for('static', filename='images/image2.jpeg') }}" alt="Image 1"> 
-                <img src="{{ url_for('static', filename='images/image3.jpeg') }}" alt="Image 3">
-                 <img src="{{ url_for('static', filename='images/image13.jpeg') }}" alt="Image 13">
+                
+                <img src="{{ url_for('static', filename='images/image2.jpeg') }}" alt="Image 1"style="width: 300px; height: auto;"> 
+                <img src="{{ url_for('static', filename='images/image3.jpeg') }}" alt="Image 3"style="width: 300px; height: auto;">
+                <img src="{{ url_for('static', filename='images/image13.jpeg') }}" alt="Image 13"style="width: 300px; height: auto;">
+                <img src="{{ url_for('static', filename='images/image4.jpeg') }}" alt="Image 4"style="width: 300px; height: auto;">
+                <img src="{{ url_for('static', filename='images/image6.jpeg') }}" alt="Image 6"style="width: 300px; height: auto;">
+                <img src="{{ url_for('static', filename='images/image11.jpeg') }}" alt="Image 11"style="width: 300px; height: auto;">
+        
         </div>
+        <div id="calendarContainer" style="display: none;">
+            <h2>Set Your Events</h2>
+            <input type="date" id="event-date">
+            <input type="text" id="event-description" placeholder="Event Description">
+            <button onclick="addEvent()">Add Event</button>
+            <ul id="event-list"></ul>
         </div>
-    
-        <script src="script.js"></script>
+        
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
     </body>
+    
 </header>
 
 
 {% endblock %}
+    

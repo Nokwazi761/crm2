@@ -4,6 +4,50 @@ body, html {
   height: 100%;
   line-height: 1.8;
 }
+body, html {
+  height: 100%;
+  line-height: 1.8;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #575757;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+}
+
+#calendarContainer {
+  margin-left: 260px;
+  padding: 16px;
+}
 
 /* Full height image header */
 .bgimg-1 {
@@ -48,7 +92,7 @@ body, html {
 /* Responsive columns */
 @media screen and (max-width: 600px) {
   .column {
-    width: 10%;
+    width: 100%;
     display: block;
     margin-bottom: 20px;
   }
@@ -61,36 +105,71 @@ body, html {
   padding: 16px;
   text-align: center;
   background-color: #f1f1f1;
- 
+}
+
+    
+
 body, html {
   margin: 0;
   padding: 0;
-  height: 50%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .image-sequence {
   position: relative;
-  width: 10%; /* Full width */
-  height: 10%; /* Full height */
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
   overflow: hidden;
+  white-space: nowrap;
+  animation: slideRightToLeft 10s linear infinite; 
 }
 
 .image-sequence img {
   position: absolute;
   top: 0;
   right: 0;
-  animation: slideRightToLeft 10s linear infinite;
-  width: 10%; /* Full width */
-  height: auto; /* Maintain aspect ratio */
+  width: 100%; /* Full width */
+  height: auto;
+  display: inline-block;
+   /* Maintain aspect ratio */
 }
 
 @keyframes slideRightToLeft {
   0% {
-      right: 100%; /* Start position (right edge of the container) */
+      transform: translateX(100%);
   }
   100% {
-      right: -100%; /* End position (left edge of the container) */
+      transform: translateX(-250%);
   }
+}
+/* Calendar styling */
+#calendar-section {
+  margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+#calendar-section h2 {
+  margin-bottom: 10px;
+}
+
+#calendar-section input,
+#calendar-section button {
+  margin: 5px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+#event-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+#event-list li {
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
 }
 
 

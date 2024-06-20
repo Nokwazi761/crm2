@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar with Sidebar</title>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 15px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        .main-content > div {
+            display: none;
+        }
+        .main-content > .active {
+            display: block;
+        }
+        #calendar {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #e2e2e2;
+            border-radius: 4px;
+        }
+        .sidebar a:hover {
+            background-color: #ccc;
+        }
+        #activities, #teams {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="#" id="calendar-link">Calendar</a>
+        <a href="#" id="activities-link">Activities</a>
+        <a href="#" id="teams-link">Teams</a>
+    </div>
+    <div class="main-content">
+        <div id="calendar"></div>
+        <div id="activities">
+            <h2>Upload a Document or File</h2>
+            <form id="uploadForm">
+                <input type="file" id="fileInput" name="file" />
+                <button type="submit">Upload</button>
+            </form>
+            <div id="uploadedFiles"></div>
+        </div>
+        <div id="teams">
+            <h2>Teams</h2>
+            <div>
+                <h3>IT Team</h3>
+                <ul id="it-team">
+                    <!-- IT team members will be listed here -->
+                </ul>
+                <input type="text" id="it-member" placeholder="Add IT member" />
+                <button id="add-it-member">Add</button>
+            </div>
+            <div>
+                <h3>Marketing Team</h3>
+                <ul id="marketing-team">
+                    <!-- Marketing team members will be listed here -->
+                </ul>
+                <input type="text" id="marketing-member" placeholder="Add Marketing member" />
+                <button id="add-marketing-member">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var activitiesEl = document.getElementById('activities');
+            var teamsEl = document.getElementById('teams');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek', // Change to time grid view
+                selectable: true,
+                selectHelper: true,
+                editable: true,
+                events: '/events', // Endpoint to fetch events from backend
+                select: function(info) {
+                    var title = prompt('Event Title:');
+                    if (title) {
+                        var startTime = info.startStr;
+                        var endTime = new Date(info.start.getTime() + 2 * 60 * 60 * 1000); // Add 2 hours
+                        var endTimeStr = endTime.toISOString().substring(0, 19); // Format to 'YYYY-MM-DDTHH:MM:SS'
+                        
+                        endTimeStr = prompt('End Time (adjust if necessary, e.g., 2024-06-15T12:30:00):', endTimeStr);
+                        
+                        if (startTime && endTimeStr) {
+                            var eventData = {
+                                title: title,
+                                start: startTime,
+                                end: endTimeStr
+                            };
+
+                            // Send event data to backend
+                            fetch('/events', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(eventData)
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                calendar.addEvent(eventData); // Add event to calendar frontend
+                            })
+                            .catch(error => {  
+                                console.error('Error:', error);
+                                alert('Failed to save event. Please try again.');
+                            });
+                        } else {
+                            alert("Both start time and end time are required.");
+                        }
+                    }
+                    calendar.unselect();
+                },
+                selectOverlap: false,
+                selectMirror: true // This option highlights the selected time range
+            });
+
+            document.getElementById('calendar-link').addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelectorAll('.main-content > div').forEach(div => div.classList.remove('active'));
+                calendarEl.classList.add('active');
+                calendar.render();
+            });
+
+            document.getElementById('activities-link').addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelectorAll('.main-content > div').forEach(div => div.classList.remove('active'));
+                activitiesEl.classList.add('active');
+            });
+
+            document.getElementById('teams-link').addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelectorAll('.main-content > div').forEach(div => div.classList.remove('active'));
+                teamsEl.classList.add('active');
+            });
+
+            // Fetch events from backend initially
+            fetch('/events')
+                .then(response => response.json())
+                .then(data => {
+                    calendar.addEventSource(data); // Load events into calendar frontend
+                })
+                .catch(error => {
+                    console.error('Error fetching events:', error);
+                    alert('Failed to fetch events. Please refresh the page.');
+                });
+
+            // Handle file upload
+            document.getElementById('uploadForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                var fileInput = document.getElementById('fileInput');
+                var formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        var uploadedFilesDiv = document.getElementById('uploadedFiles');
+                        var newFile = document.createElement('div');
+                        newFile.textContent = data.filename;
+                        uploadedFilesDiv.appendChild(newFile);
+                    } else {
+                        alert('Failed to upload file.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error uploading file:', error);
+                    alert('Failed to upload file.');
+                });
+            });
+
+            // Handle adding team members
+            document.getElementById('add-it-member').addEventListener('click', function() {
+                var memberName = document.getElementById('it-member').value;
+                if (memberName) {
+                    var li = document.createElement('li');
+                    li.textContent = memberName;
+                    document.getElementById('it-team').appendChild(li);
+                    document.getElementById('it-member').value = '';
+                }
+            });
+
+            document.getElementById('add-marketing-member').addEventListener('click', function() {
+                var memberName = document.getElementById('marketing-member').value;
+                if (memberName) {
+                    var li = document.createElement('li');
+                    li.textContent = memberName;
+                    document.getElementById('marketing-team').appendChild(li);
+                    document.getElementById('marketing-member').value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

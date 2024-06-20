@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import app
 from flask import flash, redirect, render_template, request, url_for
 from secrets import token_hex
+from flask import Flask, render_template, redirect, url_for
 
 # SetUp
 app = Flask(__name__)
@@ -52,6 +53,13 @@ def about():
 @app.route('/home')
 def home():
     return render_template('index.html')
+@app.route('/dashboard')
+def dashboard():
+    return redirect(url_for('calendar'))
+
+@app.route('/calendar')
+def calendar():
+    return render_template('calendar.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -67,7 +75,7 @@ def register():
         db.session.commit()
         flash('user added successful')
         return redirect(url_for('login'))
-    return render_template('register.html')
+    return render_template('register.html')  
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

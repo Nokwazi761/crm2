@@ -9,20 +9,6 @@ function onClick(element) {
   // Toggle between showing and hiding the sidebar when clicking the menu icon
   var mySidebar = document.getElementById("mySidebar");
   
-  function w3_open() {
-    if (mySidebar.style.display === 'block') {
-      mySidebar.style.display = 'none';
-    } else {
-      mySidebar.style.display = 'block';
-    }
-  }
-  
-  // Close the sidebar with the close button
-  function w3_close() {
-      mySidebar.style.display = "none";
-  }
-  let slideIndex = 0;
-  showSlides();
   
   function showSlides() {
       let slides = document.getElementsByClassName("slide");
@@ -35,3 +21,21 @@ function onClick(element) {
       setTimeout(showSlides, 2000); // Change image every 2 seconds
   }
   
+  const mongoose = require('mongoose');
+
+const eventSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    start: {
+        type: Date,
+        required: true
+    },
+    end: {
+        type: Date,
+        required: true
+    }
+});
+
+module.exports = mongoose.model('Event', eventSchema);
