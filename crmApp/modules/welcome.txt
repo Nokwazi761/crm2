@@ -1,0 +1,8 @@
+Hello {{username}}!
+
+Thank you for becoming one of our members in Audio Visual lab. We are really excitted to keep you up to date with
+our work, based on your preferences..
+
+
+Best Regards,
+Audio Visual lab
