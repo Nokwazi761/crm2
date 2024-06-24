@@ -37,9 +37,9 @@
         .signup-container input[type="text"],
         .signup-container input[type="email"],
         .signup-container input[type="password"],
+        .signup-container input[type="date"],
         .signup-container input[type="submit"],
-        .signup-container input[type="Date"] ,
-        .signup-container input[type="text"]{
+        .signup-container textarea {
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -66,32 +66,31 @@
         }
 
         select[name="gender"] {
-       margin-bottom: 5px;
-        padding: 5px;
-         
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-    
-    .logo {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .logo {
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
         }
 
         .logo img {
-          width: 100px;
-          border-radius: 50%;
+            width: 100px;
+            border-radius: 50%;
         }
     </style>
 </head>
 <body>
     <div class="signup-container">
         <div class="logo">
-            <img src="{{url_for('static', filename='images/logo3.jpg')}}" alt="Logo">
+            <img src="{{ url_for('static', filename='images/logo3.jpg') }}" alt="Logo">
         </div>
         <h2>Sign Up</h2>
-        <form action="#" method="POST">
+        <form action="{{ url_for('register') }}" method="POST">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" id="password" placeholder="Password" required>
             <input type="text" name="name" placeholder="Name" required>
@@ -104,8 +103,6 @@
             </select>
             <input type="text" name="phone_number" placeholder="Phone Number" required>
             <textarea name="address" placeholder="Address" required></textarea>
-          
-
             <input type="submit" value="Sign Up">
         </form>
     </div>
