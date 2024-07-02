@@ -50,7 +50,7 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/')
+@app.route('/') 
 @app.route('/index')
 @app.route('/home')
 def home():
