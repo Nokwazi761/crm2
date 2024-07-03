@@ -76,7 +76,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()     
         if user:
             if user.password ==  password:
                 is_authenticated = True
