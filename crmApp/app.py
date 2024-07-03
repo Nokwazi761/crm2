@@ -36,8 +36,6 @@ class User(db.Model):
         self.gender = gender
         self.password =  password
 
-
-
 # Code
 @app.route('/contact')
 def contact():
